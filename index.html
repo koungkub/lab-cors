@@ -1,0 +1,33 @@
+<!doctype html>
+<button onclick=login()>Login</button>
+<button onclick=logout()>Logout</button>
+<button onclick=fetchApi()>Fetch API</button>
+<div id=result></div>
+<script src=https://unpkg.com/axios@0.17.1/dist/axios.min.js></script>
+<script>
+  const http = axios.create({
+    withCredentials: true,
+    headers: {
+      'X-Requested-With': 'XMLHttpRequest'
+    }
+  })
+  const result = document.querySelector('#result')
+  function invokeApi (method, url) {
+    http[method]('http://localhost:8080' + url)
+      .then((resp) => {
+        result.innerHTML = resp.data
+      })
+      .catch((err) => {
+        result.innerHTML = err
+      })
+  }
+  function login () {
+    invokeApi('post', '/login')
+  }
+  function logout () {
+    invokeApi('get', '/logout')
+  }
+  function fetchApi () {
+    invokeApi('get', '/')
+  }
+</script>
